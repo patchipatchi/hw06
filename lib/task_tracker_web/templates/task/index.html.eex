@@ -1,0 +1,30 @@
+<h1>My Tasks</h1>
+<%= if (TaskTracker.Tasks.has_tasks(@current_user.id, @tasks)) do %>
+<%= for task <- @tasks do %>
+  <%= if (task.user.id == @current_user.id) do %>
+    <div class="card" style="width: 18rem;">
+      <div class="card-header">
+        <%= if task.done do %></p>
+          <p> You have finished the task </p>
+        <% else %>
+          <p> You have not finished the task </p>
+        <% end %>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Task: <%= task.title %></h5>
+        <h6 class="card-subtitle mb-2 text-muted">Assigned to: <%= task.user.name %></h6>
+        <p class="card-text"><%= task.description %></p>
+        <%= link "Edit", to: Routes.task_path(@conn, :edit, task), class: "btn btn-secondary" %>
+        <%= link "Delete", to: Routes.task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
+      </div>
+      <div class="card-footer text-muted">
+        <p>Total Minutes spent:<%= task.time_spent %></p>
+      </div>
+    </div>
+    <br>
+   <% end %>
+  <% end %>
+<% else %>
+	<p>You don't have any tasks assigned to you yet!</p>
+<% end %>
+<span><%= link "New Task", to: Routes.task_path(@conn, :new), class: 'btn btn-primary' %></span>
