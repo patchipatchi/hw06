@@ -2,7 +2,7 @@
 <%= if (TaskTracker.Tasks.has_tasks(@current_user.id, @tasks)) do %>
 <%= for task <- @tasks do %>
   <%= if (task.user.id == @current_user.id) do %>
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 22rem;">
       <div class="card-header">
         <%= if task.done do %></p>
           <p> You have finished the task </p>
@@ -15,10 +15,11 @@
         <h6 class="card-subtitle mb-2 text-muted">Assigned to: <%= task.user.name %></h6>
         <p class="card-text"><%= task.description %></p>
         <%= link "Edit", to: Routes.task_path(@conn, :edit, task), class: "btn btn-secondary" %>
-        <%= link "Delete", to: Routes.task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
+        <button id="start_button" data-task-id="<%= task.id%>" class="btn btn-success">Start Working</button>
+        <button id="stop_button" data-task-id="<%= task.id%>" class="btn btn-warning">Stop Working</button>
       </div>
       <div class="card-footer text-muted">
-        <p>Total Minutes spent:<%= task.time_spent %></p>
+        <p>Total Minutes spent:<%= TaskTracker.Tasks.get_time_spent(task.id) %></p>
       </div>
     </div>
     <br>
@@ -27,4 +28,32 @@
 <% else %>
 	<p>You don't have any tasks assigned to you yet!</p>
 <% end %>
-<span><%= link "New Task", to: Routes.task_path(@conn, :new), class: 'btn btn-primary' %></span>
+
+<h1>Underling's Tasks</h1>
+<table class="table table-dark table-striped">
+  <thead>
+    <th scope="col">Task Name</th>
+    <th scope="col">Assigned to</th>
+    <th scope="col">Done?</th>
+    <th scope="col">Time Spent</th>
+    <th scope="col"><%= link "New Task", to: Routes.task_path(@conn, :new), class: 'btn btn-primary' %></th>
+    <th scope="col"></th>
+  </thead>
+<tbody>
+<%= for task <- @tasks do %>
+ <%= unless is_nil task.user.manager do %>
+  <%= if (task.user.manager.id == @current_user.id) do %>
+    <tr>
+      <th scope="row"><%= task.title %></th>
+      <td><%= task.user.name %></td>
+      <td><%= task.done %></td>
+      <td><%= TaskTracker.Tasks.get_time_spent(task.id) %></td>
+      <td><%= link "Edit", to: Routes.task_path(@conn, :edit, task), class: "btn btn-secondary" %></td>
+      <td><%= link "Delete", to: Routes.task_path(@conn, :delete, task), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %></td>
+    
+    <br>
+   <% end %>
+  <% end %>
+<% end %>
+</tbody>
+</table>

@@ -19,6 +19,13 @@ defmodule TaskTracker.Users do
   """
   def list_users do
     Repo.all(User)
+    |> Repo.preload(:manager)
+  end
+
+  def list_underlings(id) do
+    list_users()
+    |> Enum.reject(fn x -> x.manager == nil end)
+    |> Enum.reject(fn x -> x.manager.id != id end)
   end
 
   @doc """

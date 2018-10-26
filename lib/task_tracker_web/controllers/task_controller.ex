@@ -3,6 +3,7 @@ defmodule TaskTrackerWeb.TaskController do
 
   alias TaskTracker.Tasks
   alias TaskTracker.Tasks.Task
+  alias TaskTracker.TimeBlocks.TimeBlock
 
   def index(conn, _params) do
     if Plug.Conn.get_session(conn, :user_id) do

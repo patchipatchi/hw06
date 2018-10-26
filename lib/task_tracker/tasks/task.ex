@@ -7,8 +7,8 @@ defmodule TaskTracker.Tasks.Task do
     field :description, :string
     field :done, :boolean, default: false
     field :title, :string, null: false
-    field :time_spent, :integer, default: 0
     belongs_to :user, TaskTracker.Users.User
+    has_many :time_block, TaskTracker.TimeBlocks.TimeBlock
 
     timestamps()
   end
@@ -16,7 +16,7 @@ defmodule TaskTracker.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :description, :done, :time_spent, :user_id])
+    |> cast(attrs, [:title, :description, :done, :user_id])
     |> foreign_key_constraint(:user_id)
     |> validate_required([:title, :description, :done, :user_id])
   end

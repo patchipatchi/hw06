@@ -18,24 +18,52 @@
 </div>
 
 <div class="form-group">
-  <%= label f, :time_spent %>
-  <%= number_input f, :time_spent, class: "form-control", step: 15, min: 0 %>
-  <%= error_tag f, :done %>
-</div>
-
-<div class="form-group">
   <%= label f, :done %>
   <%= checkbox f, :done, class: "form-control" %>
   <%= error_tag f, :done %>
 </div>
 
+<%= if (@current_user.id == @task.user.manager.id) do %>
 <div class="form-group">
-  <%= label f, :user_id %>
-  <%= select f, :user_id, Enum.map(TaskTracker.Users.list_users(), &{&1.name, &1.id}), class: "form-control"  %>
+  <%= label f, :underling %>
+  <%= select f, :user_id, Enum.map(TaskTracker.Users.list_underlings(@current_user.id), &{&1.name, &1.id}), class: "form-control"  %>
   <%= error_tag f, :user_id %>
 </div>
+<% end %>
 
   <div>
     <%= submit "Save", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<h4>Time Blocks</h4>
+
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th>start time</th>
+      <th>end time</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><input id="start_d" type="date"/>
+      <input id="start_t" type="time"/></td>
+      <td><input id="end_d" type="date"/>
+      <input id="end_t" type="time"/></td>
+      <td><button id="new_button" data-task-id="<%= @task.id%>" class="btn btn-primary">New Time Block</button></td>
+      <td></td>
+    </tr>
+<%= for block <- @task.time_block do %>
+    <tr>
+      <td><%= block.start_time %></td>
+      <td><%= block.end_time %></td>
+      <td><button id="update_button" data-timeblock-id="<%= block.id%>" class="btn btn-warning">Update</button></td>
+      <td><button id="delete_button" data-timeblock-id="<%= block.id%>" class="btn btn-danger">Delete</button></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+

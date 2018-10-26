@@ -18,7 +18,8 @@
             <p class="my-3">
               User: <%= @current_user.name %> |
               <%= link("Logout", to: Routes.session_path(@conn, :delete),
-                method: :delete) %>
+                method: :delete) %> |
+              <%= link "Edit Account", to: Routes.user_path(@conn, :edit, @current_user) %>
             </p>
           <% else %>
             <%= form_for @conn, Routes.session_path(@conn, :create),

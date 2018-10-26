@@ -19,7 +19,7 @@ defmodule TaskTracker.Tasks do
   """
   def list_tasks do
     Repo.all(Task)
-    |> Repo.preload(:user)
+    |> Repo.preload(user: :manager)
   end
 
   @doc """
@@ -36,7 +36,19 @@ defmodule TaskTracker.Tasks do
       ** (Ecto.NoResultsError)
 
   """
-  def get_task!(id), do: Repo.get!(Task, id)
+  def get_task!(id) do 
+	Repo.get!(Task, id)
+	|> Repo.preload(user: :manager)
+	|> Repo.preload(:time_block)
+  end
+
+  def get_time_spent(id) do
+	task = get_task!(id)
+        Enum.map(task.time_block, fn x -> DateTime.diff(x.end_time, x.start_time) end)
+        |> Enum.sum()
+	|> Kernel./(60)
+	|> Float.round(2)
+  end
 
   @doc """
   Creates a task.
