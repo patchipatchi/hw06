@@ -21,25 +21,19 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 # Other
 
-The Nav-bar of the site gives any person without a session cookie
-the option to log in. This fails if the username entered has not been
-registered yet. If the username has been registered and is entered,
-the user will then have all "/" routes go to "/tasks" so long as a
-session cookie exists.
+Users now have the option to edit their account. This is where they
+can change their name or who manages them. A manager may assign any
+of their underlings tasks, but the drop down for assigning only shows
+their underlings. A user can be their own manager. A user can only
+have one manager. Tasks are displayed as cards, and can be started
+or stopped by pressing a button on them. These provide time blocks
+for the user to record how long they have worked on a task. If they
+need to edit their tasks, they can update any of their previous time
+blocks. They may also delete time blocks or manually add their own.
+The card will display how long a user has worked on a task as well.
 
-On the "/tasks" page each task that has been assigned to the user is
-displayed as a card. All relevant information (task name, assigned to,
-description, time spent, and completion) is displayed on the card. The
-user may edit this card or delete it from the buttons on the card as
-well. When editing or creating a new card, the user can assign the
-task to any other user via a drop down menu. There is also a step menu
-for adding how much time is spent on a task, in 15 minute increments.
-A check mark box is given for determining completion.
-
-Once managers are added in, the drop down menu will be limited to only
-the subset of users that managers can see. Additionally, a button for
-time measuring will be placed on the card itself for more accurate
-time measurements.
-
-In the database, each task has a reference to the user it is assigned
-to, and has fields for the card as described above.
+Managers have an abridged view of their underlings, and can see all
+tasks assigned to their underlings as well as how long they have
+worked on the tasks. Managers may also edit an underling's task, but
+cannot change time blocks. They can also delete the task or reassign
+it.

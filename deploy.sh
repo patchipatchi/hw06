@@ -1,13 +1,12 @@
 #!/bin/bash
 
 export MIX_ENV=prod
-export PORT=4748
+export PORT=4749
 export NODEBIN=`pwd`/assets/node_modules/.bin
 export PATH="$PATH:$NODEBIN"
 
 echo "Building..."
 
-mkdir -p ~/.config
 
 mix deps.get
 mix compile

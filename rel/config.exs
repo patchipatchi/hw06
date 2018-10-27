@@ -16,16 +16,6 @@ use Mix.Releases.Config,
 # For a full list of config options for both releases
 # and environments, visit https://hexdocs.pm/distillery/config/distillery.html
 
-get_secret = fn name ->
-  base = Path.expand("~/.config/task_tracker")
-  File.mkdir_p!(base)
-  path = Path.join(base, name)
-  unless File.exists?(path) do
-    secret = Base.encode16(:crypto.strong_rand_bytes(32))
-    File.write!(path, secret)
-  end
-  String.trim(File.read!(path))
-end
 
 # You may define one or more environments in this file,
 # an environment's settings will override those of a release
@@ -41,13 +31,14 @@ environment :dev do
   # dev mode.
   set dev_mode: true
   set include_erts: false
-  set cookie: String.to_atom(get_secret.("dev_cookie"))
+  set cookie: :"fmq$:&kR/E>dC]k@]WbH}`:s;>^]teJbqr9ty8`x>DPhCJ&j*w^dD]?yIs!ZPP5j"
 end
 
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: String.to_atom(get_secret.("prod_cookie"))
+  set cookie: :"(7K{[a?^3}N9:<=33rJ%{$qdxHJ=@yGouADMFN>HNvc=xYMNoRD=KdW[.~6iNZ8x"
+  set vm_args: "rel/vm.args"
 end
 
 # You may define one or more releases in this file.
