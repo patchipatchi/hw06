@@ -21,7 +21,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 # Other
 
-The Nav-bar of the site gives any person without a session cookie
+tThe Nav-bar of the site gives any person without a session cookie
 the option to log in. This fails if the username entered has not been
 registered yet. If the username has been registered and is entered,
 the user will then have all "/" routes go to "/tasks" so long as a
